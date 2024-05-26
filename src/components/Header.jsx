@@ -59,7 +59,7 @@ async function Header() {
           </SheetTrigger>
           <SheetContent side="left">
             <Link href={"#"}>
-              <h3>JOBSCO</h3>
+              <h3 className="font-bold text-2xl">JOBSCO</h3>
             </Link>
             <div className="grid gap-2 py-6">
               {menuItems.map(
@@ -78,7 +78,10 @@ async function Header() {
             <UserButton afterSignOutUrl="/" />
           </SheetContent>
         </Sheet>
-        <Link className="hidden lg:flex mr-6" href={"#"}>
+        <Link
+          className="font-bold ml-auto lg:ml-0 text-4xl lg:flex mr-6"
+          href={"#"}
+        >
           JOBSCO
         </Link>
         <nav className="ml-auto hidden lg:flex gap-6">

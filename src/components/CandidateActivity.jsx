@@ -54,12 +54,12 @@ const CandidateActivity = ({
         </div>
         <TabsContent
           value={selectedTab}
-          className="grid grid-cols-4 gap-4 mt-6"
+          className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-4 mt-6"
         >
           {renderApplicationArray().map((application, i) => (
             <div
               key={i}
-              className="px-4 py-6 rounded-md shadow-sm tracking-tight bg-slate-50 border hover:bg-white flex flex-col gap-2 transition-all duration-500"
+              className="px-4 py-6 rounded-lg shadow-sm tracking-tight bg-slate-50 border hover:bg-white flex flex-col gap-2 transition-all duration-500"
             >
               <div className="flex justify-between items-center">
                 <JobIcon />

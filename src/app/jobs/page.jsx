@@ -1,4 +1,8 @@
-import { fetchAllJobsAction, fetchProfileAction } from "@/actions";
+import {
+  fetchAllJobsAction,
+  fetchJobsForRecruiterAction,
+  fetchProfileAction,
+} from "@/actions";
 import CandidateFilter from "@/components/CandidateFilter";
 import JobsListing from "@/components/JobsListingRecruiter";
 import PostJobButton from "@/components/PostJobButton";
@@ -10,6 +14,10 @@ export default async function JobsPage({ searchParams }) {
   const user = await currentUser();
   const profileInfo = await fetchProfileAction(user?.id);
   if (!profileInfo) redirect("/onboard");
+  const jobsPostedByRecruiter = await fetchJobsForRecruiterAction(
+    profileInfo?.userId
+  );
+
   const filterCategories = await fetchAllJobsAction();
 
   const filterMenus = filterMenuDataArray.map((item) => {
@@ -37,7 +45,10 @@ export default async function JobsPage({ searchParams }) {
         {profileInfo?.role === "candidate" ? (
           <CandidateFilter filterMenus={filterMenus} />
         ) : (
-          <PostJobButton profileInfo={profileInfo} />
+          <PostJobButton
+            profileInfo={profileInfo}
+            jobsPostedByRecruiter={jobsPostedByRecruiter}
+          />
         )}
       </div>
       <div>

@@ -14,11 +14,34 @@ import {
 } from "react-icons/fa";
 import { createJobApplicationAction } from "@/actions";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function CommonCard({ job, role, applications, profileInfo }) {
   const router = useRouter();
   const [drawerState, setDrawerState] = useState(false);
+
+  const handleApplyJob = () => {
+    if (applications.length >= 2 && profileInfo?.isPremiumUser === false) {
+      toast.error("Choose a premium plan to apply more than 2 jobs.");
+      return false;
+    } else if (
+      applications.length >= 10 &&
+      profileInfo?.memberShipType === "basic"
+    ) {
+      toast.error("Please upgrade your membership to apply more jobs.");
+      return false;
+    } else if (
+      applications.length >= 100 &&
+      profileInfo?.memberShipType === "teams"
+    ) {
+      toast.error("Please upgrade your membership to apply more jobs.");
+      return false;
+    }
+    return true;
+  };
+
   const clickHandler = async () => {
+    if (!handleApplyJob()) return;
     const data = {
       jobID: job._id,
       candidateUserID: profileInfo?.userId,

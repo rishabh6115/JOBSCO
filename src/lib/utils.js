@@ -1,6 +1,5 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-// import qs from "query-string";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -235,41 +234,26 @@ export const filterMenuDataArray = [
   },
 ];
 
-// export function formUrlQuery({ params, dataToAdd }) {
-//   let currentURL = qs.parse(params);
-
-//   if (Object.keys(dataToAdd).length > 0) {
-//     Object.keys(dataToAdd).map((key) => {
-//       if (dataToAdd[key].length === 0) delete currentURL[key];
-//       else currentURL[key] = dataToAdd[key].join(",");
-//     });
-//   }
-
-//   return qs.stringifyUrl(
-//     {
-//       url: window.location.pathname,
-//       query: currentURL,
-//     },
-//     {
-//       skipNull: true,
-//     }
-//   );
-// }
-
 export const membershipPlans = [
   {
     heading: "Tier 1",
     price: 100,
     type: "basic",
+    recruiterDescription: "Post up to 10 Jobs",
+    candidateDescription: "Apply to 10 Jobs",
   },
   {
     heading: "Tier 2",
     price: 1000,
     type: "teams",
+    recruiterDescription: "Post up to 100 Jobs",
+    candidateDescription: "Apply to 100 Jobs",
   },
   {
     heading: "Tier 3",
     price: 5000,
     type: "enterprise",
+    recruiterDescription: "Post unlimited Jobs",
+    candidateDescription: "Apply to unlimited Jobs",
   },
 ];

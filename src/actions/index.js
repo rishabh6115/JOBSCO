@@ -5,6 +5,7 @@ import Application from "@/models/application";
 import Job from "@/models/jobs";
 import Profile from "@/models/profile";
 import { revalidatePath } from "next/cache";
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export async function createProfileAction(formData, pathToRevalidate) {
   await connectToDB();
@@ -104,7 +105,7 @@ export async function updateProfileAction(data, pathToRevalidate) {
     _id,
   } = data;
 
-  await Profile.findOneAndUpdate(
+  const res = await Profile.findOneAndUpdate(
     {
       _id,
     },
@@ -121,6 +122,33 @@ export async function updateProfileAction(data, pathToRevalidate) {
     },
     { new: true }
   );
-
+  console.log(res, "res");
   revalidatePath(pathToRevalidate);
+}
+
+export async function createPriceIdAction(data) {
+  const session = await stripe.prices.create({
+    currency: "inr",
+    unit_amount: data?.amount * 100,
+    recurring: { interval: "year" },
+    product_data: {
+      name: "Premium Membership",
+    },
+  });
+  return {
+    id: session?.id,
+  };
+}
+
+export async function createStripePaymentAction(data) {
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: data?.lineItems,
+    mode: "subscription",
+    success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/membership?status=success`,
+    cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/membership?status=cancel`,
+  });
+  return {
+    id: session?.id,
+  };
 }
