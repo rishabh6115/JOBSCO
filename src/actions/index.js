@@ -75,3 +75,52 @@ export async function fetchCandidateInfoAction(id) {
   const result = await Profile.findOne({ userId: id });
   return JSON.parse(JSON.stringify(result));
 }
+
+export async function fetchJobsForCandidateWithFilter(filterParams = {}) {
+  let updatedParams = {};
+
+  Object.keys(filterParams).forEach((key) => {
+    updatedParams[key] = { $in: filterParams[key].split(",") };
+  });
+  await connectToDB();
+  const result = await Job.find(
+    filterParams && Object.keys(filterParams).length > 0 ? updatedParams : {}
+  );
+  return JSON.parse(JSON.stringify(result));
+}
+
+export async function updateProfileAction(data, pathToRevalidate) {
+  await connectToDB();
+  const {
+    userId,
+    role,
+    email,
+    isPremiumUser,
+    memberShipType,
+    memberShipStartDate,
+    memberShipEndDate,
+    recruiterInfo,
+    candidateInfo,
+    _id,
+  } = data;
+
+  await Profile.findOneAndUpdate(
+    {
+      _id,
+    },
+    {
+      userId,
+      role,
+      email,
+      isPremiumUser,
+      memberShipType,
+      memberShipStartDate,
+      memberShipEndDate,
+      recruiterInfo,
+      candidateInfo,
+    },
+    { new: true }
+  );
+
+  revalidatePath(pathToRevalidate);
+}

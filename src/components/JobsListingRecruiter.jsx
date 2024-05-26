@@ -1,22 +1,21 @@
 import {
-  fetchAllJobsAction,
   fetchApplicationsForCandidateAction,
   fetchApplicationsForRecruiterAction,
+  fetchJobsForCandidateWithFilter,
   fetchJobsForRecruiterAction,
 } from "@/actions";
 import CommonCard from "./CommonCard";
 
-const JobsListingRecruiter = async ({ profileInfo }) => {
+const JobsListingRecruiter = async ({ profileInfo, searchParams }) => {
   const jobs =
     profileInfo?.role === "candidate"
-      ? await fetchAllJobsAction()
+      ? await fetchJobsForCandidateWithFilter(searchParams)
       : await fetchJobsForRecruiterAction(profileInfo?.userId);
 
   const applications =
     profileInfo?.role === "candidate"
       ? await fetchApplicationsForCandidateAction(profileInfo?.userId)
       : await fetchApplicationsForRecruiterAction(profileInfo?.userId);
-  console.log(applications);
   return (
     <div className="grid lg:grid-cols-4 grid-col-2 gap-5 mt-5">
       {jobs?.map((job) => (
